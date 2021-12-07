@@ -1,0 +1,53 @@
+import pandas as pd
+
+
+
+
+car=pd.read_csv('pre.csv')
+car.head()
+
+location	type	price
+0	bachupally	plot	10000
+1	bachupally	plot	10500
+2	bachupally	plot	10050
+
+
+
+
+X=car.drop(columns='price')
+y=car['price']
+
+
+
+from sklearn.model_selection import train_test_split
+X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2)
+
+
+
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import make_column_transformer
+from sklearn.pipeline import make_pipeline
+
+
+
+
+ohe=OneHotEncoder()
+ohe.fit(X[['location','type']])
+
+
+column_trans=make_column_transformer((OneHotEncoder(),['location','type']),remainder='passthrough')
+
+
+
+y_pred=pipe.predict(X_test)
+
+
+lr=LinearRegression()
+
+pipe=make_pipeline(column_trans,lr)
+pipe.fit(X_train,y_train)
+
+pipe.predict(pd.DataFrame([['bachupally','plot']],columns=['location','type']))
+output = array([10250.])
